@@ -50,7 +50,8 @@ public class GBQDataFlowJob {
                 .apply("WriteToBQ",
                         BigQueryIO.writeTableRows()
                                 .to(destinationTable)
-                                .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                                //.withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_TRUNCATE)
+                                .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
                                         .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER));
 
         // Run the pipeline

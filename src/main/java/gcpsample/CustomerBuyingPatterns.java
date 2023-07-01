@@ -1,58 +1,66 @@
 package gcpsample;
 
+import com.google.api.services.bigquery.model.TableRow;
+import org.apache.beam.runners.direct.DirectRunner;
 import org.apache.beam.sdk.Pipeline;
-import org.apache.beam.sdk.io.TextIO;
+import org.apache.beam.sdk.extensions.gcp.options.GcpOptions;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
-import org.apache.beam.sdk.io.gcp.bigquery.TableRowJsonCoder;
-import org.apache.beam.sdk.transforms.Count;
+import org.apache.beam.sdk.options.PipelineOptions;
+import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
-import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
-import com.google.api.services.bigquery.model.TableRow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 
 public class CustomerBuyingPatterns {
-
-    static class ExtractAndCleanDataFn extends DoFn<String, KV<String, Integer>> {
-        @ProcessElement
-        public void processElement(ProcessContext c) {
-            String[] fields = c.element().split(",");
-            try {
-                String customerId = fields[0];
-                Integer unitsSold = Integer.parseInt(fields[6]); // Assuming units sold is at index 6
-                c.output(KV.of(customerId, unitsSold));
-            } catch (NumberFormatException e) {
-                // Handle or log the exception
-            }
-        }
-    }
-
-    static class FormatAsTableRowFn extends DoFn<KV<String, Long>, TableRow> {
-        @ProcessElement
-        public void processElement(ProcessContext c) {
-            c.output(new TableRow().set("customer_id", c.element().getKey())
-                    .set("total_purchases", c.element().getValue()));
-        }
-    }
-
+    private static final Logger LOG = LoggerFactory.getLogger(CustomerBuyingPatterns.class);
     public static void main(String[] args) {
-        Pipeline p = Pipeline.create();
+        try {
+            LOG.info("Job Started !!!!!!!!!!!!!!!!!!!!1");
+            System.out.println("Job Started !!!!!!!!!!!!!!!!!!!!1");
+            PipelineOptions options = PipelineOptionsFactory.create();
+            options.as(GcpOptions.class).setProject(GCP_Constants.PROJECT_ID);
+            //options.setRunner(DataflowRunner.class);
+            options.setRunner(DirectRunner.class);
+            options.setTempLocation("gs://sample_bucket_all/dataflowwrite/");
 
-        PCollection<String> rawLines = p.apply("ReadLines", TextIO.read().from("gs://bucket-name/input-files-location/*"));
 
-        PCollection<KV<String, Long>> customerPurchases = rawLines
-                .apply("ExtractAndCleanData", ParDo.of(new ExtractAndCleanDataFn()))
-                .apply("CountPurchases", Count.perKey());
+            Pipeline p = Pipeline.create(options);
 
-        PCollection<TableRow> tableRows = customerPurchases.apply("FormatAsTableRow", ParDo.of(new FormatAsTableRowFn()))
-                .setCoder(TableRowJsonCoder.of());
+            PCollection<TableRow> rawSalesData = p.apply("ReadFromBigQuery", BigQueryIO.readTableRows()
+                    .from(GCP_Constants.PROJECT_ID + ":" + GCP_Constants.DATASET_ID + ".dvcl"));
 
-        tableRows.apply(BigQueryIO.writeTableRows()
-                .to("projectid:datasetid.customer_buying_patterns")
-                .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
-                .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_IF_NEEDED));
+            PCollection<TableRow> resultRows = rawSalesData.apply(ParDo.of(new DoFn<TableRow, TableRow>() {
+                @ProcessElement
+                public void processElement(ProcessContext c) {
+                    TableRow row = c.element();
+                    String customerId = (String) row.get("customer_id");
+                    String productId = (String) row.get("product_id");
+                    Double revenue = (Double) row.get("revenue");
+                    if (customerId != null && productId != null && revenue != null) {
+                        TableRow resultRow = new TableRow();
+                        resultRow.set("customer_id", customerId);
+                        resultRow.set("product_id", productId);
+                        resultRow.set("total_spent", revenue);
+                        c.output(resultRow);
+                    }
+                }
+            }));
 
-        p.run().waitUntilFinish();
+
+            resultRows.apply(BigQueryIO.writeTableRows()
+                    .to(GCP_Constants.PROJECT_ID + ":" + GCP_Constants.DATASET_ID + ".customer_buying_patterns")
+                    .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
+                    .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER));
+            p.run().waitUntilFinish();
+            LOG.info("Job Completed !!!!!!!!!!!!!!!!!!!!1");
+            System.out.println("Job Completed !!!!!!!!!!!!!!!!!!!!1");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

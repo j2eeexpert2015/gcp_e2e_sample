@@ -31,7 +31,8 @@ public class CustomerBuyingPatterns2 {
                 Long unitsSold = Long.parseLong((String) row.get("units_sold"));
                 c.output(KV.of(customerId, unitsSold));
             } catch (NumberFormatException e) {
-                // Handle or log the exception
+                LOG.error("Error occurred inside ExtractAndCleanDataFn !!!");
+                LOG.error(e.getMessage());
             }
         }
     }
