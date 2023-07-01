@@ -1,0 +1,52 @@
+CREATE TABLE `poised-shuttle-384406.gcpsample.dvcl` (
+    division_id INT64,
+    vendor_id INT64,
+    class_id INT64,
+    location_id INT64,
+    date DATE,
+    time_of_day TIME,
+    day_of_week INT64,
+    units_sold INT64,
+    cost_per_unit FLOAT64,
+    revenue FLOAT64,
+    returns INT64,
+    discount FLOAT64,
+    promotion_id STRING
+);
+
+CREATE TABLE `poised-shuttle-384406.gcpsample.customers` (
+    customer_id STRING,
+    age INT64,
+    gender STRING,
+    location_id INT64
+);
+
+CREATE TABLE `poised-shuttle-384406.gcpsample.inventory` (
+    product_id INT64,
+    location_id INT64,
+    quantity_in_stock INT64,
+    reorder_level INT64
+);
+CREATE TABLE `poised-shuttle-384406.gcpsample.customer_buying_patterns`
+(
+    customer_id STRING,
+    product_id STRING,
+    total_quantity INT64,
+    total_spent FLOAT64,
+    last_purchase_date DATE
+)
+
+# Source table DDL
+CREATE TABLE `poised-shuttle-384406.gcpsample.source_table`
+(
+    column1 STRING,
+    column2 STRING
+);
+
+# Target table DDL
+CREATE TABLE `poised-shuttle-384406.gcpsample.target_table`
+(
+    column1 STRING,
+    column2 STRING
+);
+
