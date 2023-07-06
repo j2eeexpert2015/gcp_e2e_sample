@@ -30,3 +30,45 @@ VALUES
 ('value41', 'value42'),
 ('value51', 'value52');
 
+
+-- Run 1
+INSERT INTO gcpsample.DVCL (division_id, vendor_id, class_id, location_id, cost, sales, transaction_time)
+VALUES
+(1, 100, 200, 300, 50, 100, TIMESTAMP "2023-07-01 12:00:00 UTC"),
+(1, 100, 200, 300, 60, 120, TIMESTAMP "2023-07-01 13:00:00 UTC"),
+(2, 101, 201, 301, 70, 150, TIMESTAMP "2023-07-01 14:00:00 UTC"),
+(2, 101, 201, 301, 80, 200, TIMESTAMP "2023-07-01 15:00:00 UTC");
+
+CALL gcpsample.generate_daily_sales_summary(DATE "2023-07-01");
+
+-- Run 2
+INSERT INTO gcpsample.DVCL (division_id, vendor_id, class_id, location_id, cost, sales, transaction_time)
+VALUES
+(1, 100, 200, 300, 90, 200, TIMESTAMP "2023-07-02 12:00:00 UTC"),
+(1, 100, 200, 300, 100, 220, TIMESTAMP "2023-07-02 13:00:00 UTC"),
+(2, 101, 201, 301, 110, 250, TIMESTAMP "2023-07-02 14:00:00 UTC"),
+(2, 101, 201, 301, 120, 300, TIMESTAMP "2023-07-02 15:00:00 UTC");
+
+CALL gcpsample.generate_daily_sales_summary(DATE "2023-07-02");
+
+-- Run 3
+INSERT INTO gcpsample.DVCL (division_id, vendor_id, class_id, location_id, cost, sales, transaction_time)
+VALUES
+(1, 100, 200, 300, 130, 300, TIMESTAMP "2023-07-03 12:00:00 UTC"),
+(1, 100, 200, 300, 140, 320, TIMESTAMP "2023-07-03 13:00:00 UTC"),
+(2, 101, 201, 301, 150, 350, TIMESTAMP "2023-07-03 14:00:00 UTC"),
+(2, 101, 201, 301, 160, 400, TIMESTAMP "2023-07-03 15:00:00 UTC");
+
+CALL gcpsample.generate_daily_sales_summary(DATE "2023-07-03");
+
+-- Run 4
+INSERT INTO gcpsample.DVCL (division_id, vendor_id, class_id, location_id, cost, sales, transaction_time)
+VALUES
+(1, 100, 200, 300, 170, 400, TIMESTAMP "2023-07-04 12:00:00 UTC"),
+(1, 100, 200, 300, 180, 420, TIMESTAMP "2023-07-04 13:00:00 UTC"),
+(2, 101, 201, 301, 190, 450, TIMESTAMP "2023-07-04 14:00:00 UTC"),
+(2, 101, 201, 301, 200, 500, TIMESTAMP "2023-07-04 15:00:00 UTC");
+
+CALL gcpsample.generate_daily_sales_summary(DATE "2023-07-04");
+
+
