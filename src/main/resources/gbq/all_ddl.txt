@@ -50,3 +50,26 @@ CREATE TABLE `poised-shuttle-384406.gcpsample.target_table`
     column2 STRING
 );
 
+CREATE TABLE `poised-shuttle-384406.gcpsample.DVCL`  (
+    division_id INT64,
+    vendor_id INT64,
+    class_id INT64,
+    location_id INT64,
+    cost FLOAT64,
+    sales FLOAT64,
+    transaction_time TIMESTAMP
+);
+
+CREATE TABLE `poised-shuttle-384406.gcpsample.sales_summary`  (
+    date DATE,
+    vendor_id INT64,
+    location_id INT64,
+    total_sales FLOAT64,
+    max_sales FLOAT64,
+    min_sales FLOAT64,
+    transaction_count INT64,
+    avg_cost FLOAT64
+);
+
+
+
