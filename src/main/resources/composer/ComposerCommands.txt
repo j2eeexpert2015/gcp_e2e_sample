@@ -1,0 +1,7 @@
+Composer V1 creation
+---------------------
+gcloud composer environments create composer-1-environment --location us-central1  --image-version composer-1.20.7-airflow-2.4.3
+
+Composer V1 deletion
+---------------------
+gcloud composer environments delete example-environment --location=us-central1
