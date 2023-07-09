@@ -1,6 +1,7 @@
-package gcpsample;
+package gcpsample.dataflow;
 
 import com.google.api.services.bigquery.model.TableRow;
+import gcpsample.GCP_Constants;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
@@ -11,7 +12,7 @@ import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.runners.direct.DirectRunner;
 
 
-public class BQRead {
+public class BQReadLocal {
 
 
     static class PrintFn extends DoFn<TableRow, Void> {
