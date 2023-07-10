@@ -1,0 +1,19 @@
+CREATE OR REPLACE PROCEDURE gcpsample.generate_daily_sales_summary(date_input DATE)
+BEGIN
+    DELETE FROM gcpsample.sales_summary WHERE date = date_input;
+
+    INSERT INTO gcpsample.sales_summary
+    SELECT
+        DATE(transaction_time) as date,
+        vendor_id,
+        location_id,
+        SUM(sales) as total_sales,
+        MAX(sales) as max_sales,
+        MIN(sales) as min_sales,
+        COUNT(*) as transaction_count,
+        AVG(cost) as avg_cost
+    FROM gcpsample.DVCL
+    WHERE DATE(transaction_time) = date_input
+    GROUP BY date, vendor_id, location_id;
+END;
+--CALL gcpsample.generate_daily_sales_summary('2023-07-01');
