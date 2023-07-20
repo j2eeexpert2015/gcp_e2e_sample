@@ -1,3 +1,6 @@
+https://stackoverflow.com/questions/67599930/bigquery-why-when-i-try-execute-query-give-me-the-error-not-found-dataset-was
+https://cloud.google.com/bigquery/docs/locations
+
 DECLARE gcp_project_id STRING;
 DECLARE gbq_dataset_id STRING;
 SET gcp_project_id = "sanguine-anthem-393416";
