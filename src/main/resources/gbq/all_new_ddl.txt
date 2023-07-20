@@ -1,0 +1,21 @@
+DECLARE gcp_project_id STRING;
+DECLARE gbq_dataset_id STRING;
+SET gcp_project_id = "sanguine-anthem-393416";
+SET gbq_dataset_id = "gcpsample";
+
+EXECUTE IMMEDIATE format("""
+CREATE TABLE %s.%s.dvcl (
+    division_id INT64,
+    vendor_id INT64,
+    class_id INT64,
+    location_id INT64,
+    date DATE,
+    time_of_day TIME,
+    day_of_week INT64,
+    units_sold INT64,
+    cost_per_unit FLOAT64,
+    revenue FLOAT64,
+    returns INT64,
+    discount FLOAT64,
+    promotion_id STRING)
+""", gcp_project_id,gbq_dataset_id);
