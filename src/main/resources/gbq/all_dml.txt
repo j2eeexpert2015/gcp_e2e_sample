@@ -1,3 +1,18 @@
+DECLARE gcp_project_id STRING;
+DECLARE gbq_dataset_id STRING;
+SET gcp_project_id = "sanguine-anthem-393416";
+SET gbq_dataset_id = "gcpsample";
+
+EXECUTE IMMEDIATE format("""
+INSERT INTO %s.%s.dvcl
+VALUES
+(101, 201, 301, 401, DATE "2023-06-21", TIME "14:30:00", 4, 200, 10.00, 3000.00, 5, 0.10, 'P01'),
+(102, 202, 302, 402, DATE "2023-06-20", TIME "10:15:00", 3, 150, 12.00, 2250.00, 3, 0.15, 'P02'),
+(103, 203, 303, 403, DATE "2023-06-19", TIME "16:45:00", 2, 180, 11.00, 2700.00, 2, 0.20, 'P03'),
+(104, 204, 304, 404, DATE "2023-06-18", TIME "13:30:00", 1, 210, 9.50, 3150.00, 4, 0.05, 'P04'),
+(105, 205, 305, 405, DATE "2023-06-17", TIME "15:45:00", 7, 230, 13.00, 3450.00, 1, 0.10, 'P05')
+""", gcp_project_id,gbq_dataset_id);
+
 INSERT INTO `poised-shuttle-384406.gcpsample.dvcl`
 VALUES
 (101, 201, 301, 401, DATE "2023-06-21", TIME "14:30:00", 4, 200, 10.00, 3000.00, 5, 0.10, 'P01'),

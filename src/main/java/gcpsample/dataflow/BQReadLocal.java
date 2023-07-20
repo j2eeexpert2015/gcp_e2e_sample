@@ -23,14 +23,10 @@ public class BQReadLocal {
     }
 
     public static void main(String[] args) {
-        //PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
         PipelineOptions options = PipelineOptionsFactory.create();
         options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
-        //options.setRunner(DataflowRunner.class);
         options.setRunner(DirectRunner.class);
-        options.setTempLocation("gs://sample_bucket_all/dataflow/");
-        //options.setStagingLocation("gs://my-bucket/staging/");
-        //options.setTempLocation("gs://my-bucket/temp/");
+        //options.setTempLocation("gs://sample_bucket_all/dataflow/");
         Pipeline pipeline = Pipeline.create(options);
         pipeline.apply("ReadFromBigQuery", BigQueryIO.readTableRows()
                         .from(GCPConstants.PROJECT_ID+":"+GCPConstants.DATASET_ID+".dvcl")
