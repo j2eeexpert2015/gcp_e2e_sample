@@ -20,7 +20,7 @@ public class GBQDataFlowJob {
         // Create a PipelineOptions object. This object lets us set various execution options
         // for our pipeline, such as the runner you wish to use.
         PipelineOptions options = PipelineOptionsFactory.create();
-        options.as(GcpOptions.class).setProject(GCP_Constants.PROJECT_ID);
+        options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
         options.setRunner(DirectRunner.class);
         options.setTempLocation("gs://sample_bucket_all/dataflowwrite/");
 

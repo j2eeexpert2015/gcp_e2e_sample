@@ -39,14 +39,14 @@ public class CustomerBuyingPatterns2 {
 
     public static void main(String[] args) {
         PipelineOptions options = PipelineOptionsFactory.create();
-        options.as(GcpOptions.class).setProject(GCP_Constants.PROJECT_ID);
+        options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
         //options.setRunner(DataflowRunner.class);
         options.setRunner(DirectRunner.class);
         options.setTempLocation("gs://sample_bucket_all/dataflowwrite/");
         Pipeline p = Pipeline.create(options);
 
         PCollection<TableRow> rawLines = p.apply("ReadFromBigQuery",
-                BigQueryIO.readTableRows().from(GCP_Constants.PROJECT_ID+":"+GCP_Constants.DATASET_ID+".dvcl"));
+                BigQueryIO.readTableRows().from(GCPConstants.PROJECT_ID+":"+GCPConstants.DATASET_ID+".dvcl"));
 
         PCollection<KV<String, Long>> customerPurchases = rawLines
                 .apply("ExtractAndCleanData", ParDo.of(new ExtractAndCleanDataFn()))
@@ -72,7 +72,7 @@ public class CustomerBuyingPatterns2 {
         //output.setCoder(NullableCoder.of(String.class));
 
         output.apply(BigQueryIO.writeTableRows()
-                .to(GCP_Constants.PROJECT_ID+":"+GCP_Constants.DATASET_ID+".customer_buying_patterns")
+                .to(GCPConstants.PROJECT_ID+":"+GCPConstants.DATASET_ID+".customer_buying_patterns")
                 .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
                 .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER));
 

@@ -1,7 +1,7 @@
 package gcpsample.dataflow;
 
 import com.google.api.services.bigquery.model.TableRow;
-import gcpsample.GCP_Constants;
+import gcpsample.GCPConstants;
 import org.apache.beam.sdk.Pipeline;
 import org.apache.beam.sdk.extensions.gcp.options.GcpOptions;
 import org.apache.beam.sdk.io.gcp.bigquery.BigQueryIO;
@@ -25,7 +25,7 @@ public class BQReadLocal {
     public static void main(String[] args) {
         //PipelineOptions options = PipelineOptionsFactory.fromArgs(args).withValidation().create();
         PipelineOptions options = PipelineOptionsFactory.create();
-        options.as(GcpOptions.class).setProject(GCP_Constants.PROJECT_ID);
+        options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
         //options.setRunner(DataflowRunner.class);
         options.setRunner(DirectRunner.class);
         options.setTempLocation("gs://sample_bucket_all/dataflow/");
@@ -33,7 +33,7 @@ public class BQReadLocal {
         //options.setTempLocation("gs://my-bucket/temp/");
         Pipeline pipeline = Pipeline.create(options);
         pipeline.apply("ReadFromBigQuery", BigQueryIO.readTableRows()
-                        .from(GCP_Constants.PROJECT_ID+":"+GCP_Constants.DATASET_ID+".dvcl")
+                        .from(GCPConstants.PROJECT_ID+":"+GCPConstants.DATASET_ID+".dvcl")
                 .withoutValidation())
                 .apply("Print", ParDo.of(new PrintFn()));
 

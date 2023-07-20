@@ -22,7 +22,7 @@ public class CustomerBuyingPatterns {
             LOG.info("Job Started !!!!!!!!!!!!!!!!!!!!1");
             System.out.println("Job Started !!!!!!!!!!!!!!!!!!!!1");
             PipelineOptions options = PipelineOptionsFactory.create();
-            options.as(GcpOptions.class).setProject(GCP_Constants.PROJECT_ID);
+            options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
             //options.setRunner(DataflowRunner.class);
             options.setRunner(DirectRunner.class);
             options.setTempLocation("gs://sample_bucket_all/dataflowwrite/");
@@ -31,7 +31,7 @@ public class CustomerBuyingPatterns {
             Pipeline p = Pipeline.create(options);
 
             PCollection<TableRow> rawSalesData = p.apply("ReadFromBigQuery", BigQueryIO.readTableRows()
-                    .from(GCP_Constants.PROJECT_ID + ":" + GCP_Constants.DATASET_ID + ".dvcl"));
+                    .from(GCPConstants.PROJECT_ID + ":" + GCPConstants.DATASET_ID + ".dvcl"));
 
             PCollection<TableRow> resultRows = rawSalesData.apply(ParDo.of(new DoFn<TableRow, TableRow>() {
                 @ProcessElement
@@ -52,7 +52,7 @@ public class CustomerBuyingPatterns {
 
 
             resultRows.apply(BigQueryIO.writeTableRows()
-                    .to(GCP_Constants.PROJECT_ID + ":" + GCP_Constants.DATASET_ID + ".customer_buying_patterns")
+                    .to(GCPConstants.PROJECT_ID + ":" + GCPConstants.DATASET_ID + ".customer_buying_patterns")
                     .withWriteDisposition(BigQueryIO.Write.WriteDisposition.WRITE_APPEND)
                     .withCreateDisposition(BigQueryIO.Write.CreateDisposition.CREATE_NEVER));
             p.run().waitUntilFinish();

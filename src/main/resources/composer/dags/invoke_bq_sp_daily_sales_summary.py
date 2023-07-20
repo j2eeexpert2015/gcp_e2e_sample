@@ -21,7 +21,8 @@ default_dag_args = {
 location="us-central1"
 
 with models.DAG(
-        'call generate_daily_sales_summary',
+        #'call generate daily sales summary',
+       'callthesp',
         schedule_interval=datetime.timedelta(days=1),
         default_args=default_dag_args) as dag:
         
