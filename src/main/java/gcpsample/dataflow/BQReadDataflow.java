@@ -26,8 +26,7 @@ public class BQReadDataflow {
     public static void main(String[] args) {
         PipelineOptions options = PipelineOptionsFactory.create();
         options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
-        options.setRunner(DirectRunner.class);
-        //options.setRunner(DataflowRunner.class);
+        options.setRunner(DataflowRunner.class);
         options.setTempLocation("gs://"+GCPConstants.DATAFLOW_GCS_BUCKET_NAME+"/"+GCPConstants.DATAFLOW_TEMP_FOLDER);
         Pipeline pipeline = Pipeline.create(options);
         pipeline.apply("ReadFromBigQuery", BigQueryIO.readTableRows()
