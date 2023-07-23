@@ -23,7 +23,7 @@ with models.DAG(
 
     #t1 = DataflowJavaOperator(
     t1 = DataflowCreateJavaJobOperator(
-        task_id='run_dataflow_java_A',
+        task_id='RunDataflowJobA',
         jar=bucket_path,
         options={
             'arguments': 'gcpsample.GBQDataFlowJob',
