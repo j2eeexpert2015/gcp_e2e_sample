@@ -17,7 +17,7 @@ default_args = {
 }
 
 with models.DAG(
-        'composer_dataflow_dag',
+        'ComposerDataflowDag1',
         schedule_interval=datetime.timedelta(days=1),
         default_args=default_args) as dag:
 
