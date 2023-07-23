@@ -3,7 +3,7 @@ from airflow import models
 from airflow.providers.google.cloud.operators.dataflow import DataflowCreateJavaJobOperator
 from airflow.utils.dates import days_ago
 
-bucket_path = "gs://gcpsampleall/dataflow_common/all_jars/gcp_e2e_sample-1.0-SNAPSHOT.jar"
+bucket_path = "gs://gcpsampleall/dataflow_common/all_jars/gcp-samples-1.0-SNAPSHOT.jar"
 project_id = "sanguine-anthem-393416"
 
 default_args = {
@@ -24,8 +24,7 @@ with models.DAG(
     t1 = DataflowCreateJavaJobOperator(
         task_id='rundataflowjobfirst',
         jar=bucket_path,
-        job_class='gcpsample.GBQDataFlowJob',
-        job_name='{{task.task_id}}'
+        job_class='gcpsample.dataflow.BQReadDataflow'
     )
 
     t1
