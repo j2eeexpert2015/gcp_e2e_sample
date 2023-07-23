@@ -30,12 +30,18 @@
 </repositories>
 
 <dependencies>
+    <!--
+    it is the core Java SDK for Apache Beam.
+    It provides the basic tools for creating data processing pipelines in Java,
+    like PCollection, PTransform, etc.
+    -->
     <dependency>
         <groupId>org.apache.beam</groupId>
         <artifactId>beam-sdks-java-core</artifactId>
         <version>${beam.version}</version>
         <scope>provided</scope>
     </dependency>
+    <!--
     <dependency>
         <groupId>org.apache.beam</groupId>
         <artifactId>beam-sdks-java-io-google-cloud-platform</artifactId>
@@ -46,15 +52,17 @@
         <artifactId>google-auth-library-oauth2-http</artifactId>
         <version>0.22.2</version>
     </dependency>
+    -->
     <dependency>
         <groupId>org.apache.beam</groupId>
         <artifactId>beam-runners-direct-java</artifactId>
         <version>${beam.version}</version>
-        <!--
         <scope>runtime</scope>
-        -->
     </dependency>
-
+    <!--
+    beam-runners-google-cloud-dataflow-java is the runner that connects your
+    Apache Beam code to the Google Cloud Dataflow service
+    -->
     <dependency>
         <groupId>org.apache.beam</groupId>
         <artifactId>beam-runners-google-cloud-dataflow-java</artifactId>
