@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 public class GBQDataFlowJob {
     private static final Logger LOG = LoggerFactory.getLogger(GBQDataFlowJob.class);
     public static void main(String[] args) {
+        System.out.println("@@@@@@@@@@ BQReadLocal main started @@@@@@@@@@");
 
         // Create a PipelineOptions object. This object lets us set various execution options
         // for our pipeline, such as the runner you wish to use.

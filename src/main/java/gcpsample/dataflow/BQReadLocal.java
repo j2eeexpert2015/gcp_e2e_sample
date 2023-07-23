@@ -11,11 +11,13 @@ import org.apache.beam.sdk.options.PipelineOptionsFactory;
 import org.apache.beam.sdk.transforms.DoFn;
 import org.apache.beam.sdk.transforms.ParDo;
 import org.apache.beam.runners.direct.DirectRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class BQReadLocal {
 
-
+    public static final Logger log = LoggerFactory.getLogger(BQReadLocal.class);
     static class PrintFn extends DoFn<TableRow, Void> {
         @ProcessElement
         public void processElement(ProcessContext c) {
@@ -24,6 +26,8 @@ public class BQReadLocal {
     }
 
     public static void main(String[] args) {
+        log.info("@@@@@@@@@@ BQReadLocal main started @@@@@@@@@@");
+        System.out.println("@@@@@@@@@@ BQReadLocal main started @@@@@@@@@@");
         PipelineOptions options = PipelineOptionsFactory.create();
         options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
         options.setRunner(DirectRunner.class);

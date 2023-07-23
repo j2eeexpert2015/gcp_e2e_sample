@@ -1,6 +1,5 @@
 import datetime
 from airflow import models
-#from airflow.contrib.operators.dataflow_operator import DataflowTemplateOperator
 from airflow.providers.google.cloud.operators.dataflow import DataflowCreateJavaJobOperator
 from airflow.utils.dates import days_ago
 
@@ -23,13 +22,10 @@ with models.DAG(
 
     #t1 = DataflowJavaOperator(
     t1 = DataflowCreateJavaJobOperator(
-        task_id='RunDataflowJobA',
+        task_id='rundataflowjobfirst',
         jar=bucket_path,
-        options={
-            'arguments': 'gcpsample.GBQDataFlowJob',
-        },
-        job_name='{{task.task_id}}',
-        dataflow_default_options=default_args['dataflow_default_options']
+        job_class='gcpsample.GBQDataFlowJob',
+        job_name='{{task.task_id}}'
     )
 
     t1

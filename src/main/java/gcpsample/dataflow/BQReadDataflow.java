@@ -24,6 +24,7 @@ public class BQReadDataflow {
     }
 
     public static void main(String[] args) {
+        System.out.println("@@@@@@@@@@ BQReadDataflow main started @@@@@@@@@@");
         PipelineOptions options = PipelineOptionsFactory.create();
         options.as(GcpOptions.class).setProject(GCPConstants.PROJECT_ID);
         options.setRunner(DataflowRunner.class);
